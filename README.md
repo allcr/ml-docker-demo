@@ -36,8 +36,8 @@ service would be deployed to AWS ECS/Fargate or similar, without the AWS bill.
 
 ml-docker-demo/
 
-| -  train.py # trains the model, writes model.json
-| - app.py # FastAPI service
+| -  train.py # trains the model, writes model.json  
+| - app.py # FastAPI service  
 | - model.json # trained model coefficients  
 | - pyproject.toml
 | -  uv.lock
