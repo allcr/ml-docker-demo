@@ -18,6 +18,7 @@ class PredictRequest(BaseModel):
     x4: float
 
 
+
 class PredictResponse(BaseModel):
     prediction: float
 
