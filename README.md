@@ -10,7 +10,7 @@ reproducibility and security rather than shortcuts.
 A linear regression model (scikit-learn) trained on synthetic data, served via
 FastAPI, containerized with Docker, and orchestrated locally with Docker Compose.
 The goal is a correct, minimal soup-to-nuts pipeline that mirrors how a real
-service would be deployed to AWS ECS/Fargate or similar — without the AWS bill.
+service would be deployed to AWS ECS/Fargate or similar, without the AWS bill.
 
 ## Stack
 
@@ -59,6 +59,33 @@ API available at `http://localhost:8000`.
 | GET    | `/health`   | Liveness check                 |
 | POST   | `/predict`  | Returns a prediction for 4 input features |
 
+## Deployment
+
+Deployed to a single AWS EC2 instance (t3.micro, Amazon Linux 2023) to validate
+the containerized service outside a local environment.
+
+**Steps taken:**
+1. Provisioned EC2 instance via AWS CLI, restricted security group (SSH + port 8000, scoped to my IP)
+2. Installed Docker on the instance
+3. Cloned this repo and ran `docker compose up --build -d`
+4. Verified health and prediction endpoints against the instance's public IP
+5. Stopped the instance after testing to avoid ongoing charges
+
+**Verification over the public internet:**
+
+```
+$ curl http://<ec2-public-ip>:8000/health
+{"status":"ok"}
+
+$ curl -X POST http://<ec2-public-ip>:8000/predict \
+  -H "Content-Type: application/json" \
+  -d '{"x1":1,"x2":2,"x3":3,"x4":4}'
+{"prediction":18.610798752625417}
+```
+
+*(IP address redacted; instance terminated after testing.)*
+
+
 **Example request:**
 
 ```bash
@@ -84,8 +111,6 @@ reproducibility).
 
 ## Roadmap
 
-- [ ] Push image to a container registry (ECR / Docker Hub)
-- [ ] Deploy to a single EC2 instance or minimal Fargate task
 - [ ] Add CI (GitHub Actions: lint, test, build image on push)
 - [ ] Add basic auth / rate limiting before any public exposure
 - [ ] Swap in a model registry (MLflow) if versioning multiple models
