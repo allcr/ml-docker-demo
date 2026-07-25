@@ -35,14 +35,22 @@ service would be deployed to AWS ECS/Fargate or similar, without the AWS bill.
 ## Project structure
 
 ml-docker-demo/
-├── train.py # trains the model, writes model.json
-├── app.py # FastAPI service
-├── model.json # trained model coefficients
-├── pyproject.toml
-├── uv.lock
-├── Dockerfile
-├── docker-compose.yml
-└── .dockerignore
+
+| -  train.py # trains the model, writes model.json
+
+| - app.py # FastAPI service
+
+| - model.json # trained model coefficients
+
+| - pyproject.toml
+
+| -  uv.lock
+
+| - Dockerfile
+
+| -  docker-compose.yml
+
+| - .dockerignore
 
 ## Running it
 
