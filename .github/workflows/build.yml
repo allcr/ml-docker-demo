@@ -1,0 +1,22 @@
+name: Build Docker image
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Generate model artifact
+        run: |
+          pip install uv
+          uv run python train.py
+
+      - name: Build Docker image
+        run: docker build -t ml-docker-demo .
